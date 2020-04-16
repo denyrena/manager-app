@@ -1,0 +1,22 @@
+button, p, img{
+    -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
+}
+.container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; 
+}
+
+img{
+    height: 24px;
+    margin: 0;
+}
+
+p{
+    margin: 0;
+    margin-left: 5px;
+}
+
+button{
+    margin-left: auto;
+}
