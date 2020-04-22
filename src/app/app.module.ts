@@ -1,3 +1,6 @@
+import { AccountManagerService } from './manager-core/services/common/accountManager.service';
+import { SpotifyQueryService } from './manager-core/services/spotify/spotifyQuery.service';
+import { SpotifyAuthService } from './manager-core/services/spotify/spotifyAuth.service';
 import { ParseUrl } from './manager-core/utils/parse-url';
 import { WindowRef } from './manager-core/utils/window-ref';
 import { NgMaterial } from './manager-core/utils/material-modules';
@@ -11,6 +14,7 @@ import { AccountsComponent } from './manager-components/accounts/accounts.compon
 import { ActionsComponent } from './manager-components/actions/actions.component';
 import { PlaylistsComponent } from './manager-components/playlists/playlists.component';
 import { AccountComponent } from './manager-components/account/account.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -22,8 +26,8 @@ import { AccountComponent } from './manager-components/account/account.component
         PlaylistsComponent,
         AccountComponent,
     ],
-    imports: [AppRoutingModule, NgMaterial],
-    providers: [WindowRef, ParseUrl],
+    imports: [AppRoutingModule, NgMaterial, HttpClientModule],
+    providers: [WindowRef, ParseUrl, SpotifyAuthService, SpotifyQueryService, AccountManagerService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

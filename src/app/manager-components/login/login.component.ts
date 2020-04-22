@@ -1,3 +1,5 @@
+import { SpotifyAuthService } from '../../manager-core/services/spotify/spotifyAuth.service';
+import { IAuth } from './../../manager-core/entities/iAuth';
 import { ParseUrl } from './../../manager-core/utils/parse-url';
 import { WindowRef } from './../../manager-core/utils/window-ref';
 import { Component, OnInit } from '@angular/core';
@@ -11,23 +13,17 @@ import { ActivatedRoute } from '@angular/router';
 export class LoginComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
-        private window: WindowRef,
-        private parser: ParseUrl
+        private parser: ParseUrl,
+        private windowHandler: WindowRef,
+        private spotifyAuth: SpotifyAuthService
     ) {
-        activatedRoute.fragment.subscribe((fragment) => {
-            console.log(fragment);
-            console.log(parser.Decode(fragment));
-        });
+        activatedRoute.fragment.subscribe((fragment: any) => {
+            const authPart = parser.Decode(fragment);
 
-        // const routeFragment: Observable<string> = activatedRoute.fragment;
-        // routeFragment.subscribe(fragment => {
-        //   let f = fragment.match(/^(.*?)&/);
-        //   if (f) {
-        //     let token: string = f[1].replace('access_token=', '');
-        //     alert(token);
-        //     this.window.nativeWindow.close();
-        //   }
-        // });
+            spotifyAuth.handleAccessToken(authPart);
+
+            windowHandler.nativeWindow.close();
+        });
     }
 
     ngOnInit(): void {}

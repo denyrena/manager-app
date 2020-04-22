@@ -8,8 +8,12 @@ button, p, img{
 }
 
 img{
+    width: 24px;
     height: 24px;
     margin: 0;
+    background-size:cover;
+    background-position:center;
+    border-radius:50%;
 }
 
 p{

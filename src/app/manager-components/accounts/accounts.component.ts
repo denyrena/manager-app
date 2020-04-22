@@ -1,72 +1,92 @@
+import { AccountManagerService } from './../../manager-core/services/common/accountManager.service';
+import { SpotifyAuthService } from '../../manager-core/services/spotify/spotifyAuth.service';
+import { IAuth } from './../../manager-core/entities/iAuth';
 import { Account } from './../../manager-core/entities/account';
-import { AppConstants } from './../../manager-core/utils/constants';
 import { Platform } from './../../manager-core/enums/platform.enum';
 import { Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 
 @Component({
-  selector: 'app-accounts',
-  templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss']
+    selector: 'app-accounts',
+    templateUrl: './accounts.component.html',
+    styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsComponent implements OnInit {
+    platforms = Platform;
+    accounts: KeyValue<Platform, Account[]>[];
+    private readonly authProviders: IAuth[];
 
-  platforms = Platform;
-  accounts: KeyValue<Platform, Account[]>[];
+    constructor(
+        private spotifyAuth: SpotifyAuthService,
+        private accountManager: AccountManagerService
+    ) {
+        this.accounts = [];
+        this.authProviders = [];
 
-  constructor() {
-    this.accounts = [];
-   }
+        this.authProviders.push(spotifyAuth);
+    }
 
-  ngOnInit(): void {
-    // TODO load accounts from local storage for all platforms
-    const deezer: KeyValue<Platform, Account[]> = {
-      key: Platform.Deezer,
-      value: [
-        {
-          id: 1,
-          platform: Platform.Deezer,
-          login: 'noiretea',
-          accessToken: '5fe01282e44241328a84e7c5cc169165',
-          tokenExpireDate: new Date(),
-          profilePhoto: 'https://e-cdns-files.dzcdn.net/cache/images/common/favicon/favicon.a6a53d55264841165a904dbea19d5d73.ico'
+    ngOnInit(): void {
+        this.convertAccountsForUI();
+        this.spotifyAuth.onUpdateAccounts.subscribe((o) => {
+            this.convertAccountsForUI();
+        });
+    }
+
+    getAccountsByPlatform(platformKey: string): Account[] {
+        return this.accounts.find((s) => s.key === platformKey).value;
+    }
+
+    linkAccount_Click(platform: Platform): void {
+        this.executeProviderByPlatform(platform);
+    }
+
+    private executeProviderByPlatform(platform: string): void {
+        let authProvider: IAuth;
+        authProvider = this.authProviders.find((p) => p.platform === platform);
+        authProvider.openWindow();
+    }
+
+    private convertAccountsForUI() {
+        const accounts: KeyValue<Platform, Account[]>[] = [];
+        const innerAccounts = this.accountManager.getaccounts();
+
+        const spotifyAccounts: KeyValue<Platform, Account[]> = {
+            key: Platform.Spotify,
+            value: this.filterAccountsByPlatform(
+                innerAccounts,
+                Platform.Spotify
+            ),
+        };
+
+        const deezerAccounts: KeyValue<Platform, Account[]> = {
+            key: Platform.Deezer,
+            value: this.filterAccountsByPlatform(
+                innerAccounts,
+                Platform.Deezer
+            ),
+        };
+
+        const youtubeAccounts: KeyValue<Platform, Account[]> = {
+            key: Platform.Youtube,
+            value: this.filterAccountsByPlatform(
+                innerAccounts,
+                Platform.Youtube
+            ),
+        };
+
+        accounts.push(spotifyAccounts, deezerAccounts, youtubeAccounts);
+
+        this.accounts = accounts;
+    }
+
+    filterAccountsByPlatform(
+        accounts: Account[],
+        platform: Platform
+    ): Account[] {
+        if (accounts == null) {
+            return [];
         }
-      ]
+        return accounts.filter((a) => a.platform === platform);
     }
-    const spoty = {
-      key: Platform.Spotify,
-      value: []
-    }
-    const yt = {
-      key: Platform.Youtube,
-      value: []
-    }
-
-    this.accounts.push(deezer, spoty, yt);
-  }
-
-  getAccountsByPlatform(platformKey): Account[] {
-    return this.accounts.find(s => s.key == platformKey).value;
-  }
-
-  linkAccount_Click(platform: string): void {
-    let width = 860;
-    let height = 500;
-    let left = (screen.width / 2) - (width / 2);
-    let top = (screen.height / 2) - (height / 2);
-    const windowOptions = `menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=${width}, height=${height}, top=${top}, left=${left}`;
-    let type = 'auth';
-
-    window.open(this.chooseUrl(platform), type, windowOptions);
-  }
-
-  private chooseUrl(platform: string): string {
-    switch (platform) {
-      case Platform.Spotify:
-        return AppConstants.SPOTIFY_AUTH_ENDPOINT;
-      default:
-        return null;
-    }
-  }
-
 }
