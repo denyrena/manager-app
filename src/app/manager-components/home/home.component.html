@@ -3,17 +3,22 @@
         <mat-toolbar class="top-header">
             <span>Available collections</span>
         </mat-toolbar>
-        <app-playlists class="playlists"></app-playlists>
+        <app-playlists (SelectedPlaylistChanged)=initPlaylistLoading($event) class="playlists"></app-playlists>
     </div>
 
     <div class="main-column">
         <app-actions class="top-header"></app-actions>
+        <div [ngSwitch]="currentContent" class="content">
+            <app-hello *ngSwitchCase="0"></app-hello>
+            <app-tracks *ngSwitchCase="1"></app-tracks>
+            <app-wizard *ngSwitchCase="2"></app-wizard>
+        </div>
     </div>
 
     <div class="side-column">
         <mat-toolbar class="top-header">
             <span>Accounts</span>
         </mat-toolbar>
-        <app-accounts></app-accounts>      
+        <app-accounts></app-accounts>
     </div>
 </div>

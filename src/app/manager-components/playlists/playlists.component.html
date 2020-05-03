@@ -1,0 +1,10 @@
+<mat-action-list>
+    <button mat-list-item *ngFor="let playlist of spotifyPlaylists"
+    (click)=selectPlaylist(playlist.id)>
+        <img
+            matListAvatar
+            [src]="playlist.images[playlist.images.length - 1].url"
+        />
+        <h3 matLine>{{ playlist.name }}</h3>
+    </button>
+</mat-action-list>

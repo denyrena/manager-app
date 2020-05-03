@@ -1,9 +1,14 @@
-<div class="container">
-    <img [src]=account.profilePhoto>
+<mat-list *ngIf="account != undefined; else emptyacc">
+    <mat-list-item>
+        <img
+            matListAvatar
+            [src]="account.profilePhoto"
+            alt="https://open.scdn.co/cdn/images/favicon.5cb2bd30.ico"
+        />
+        <h3 matLine>{{ account.login }}</h3>
+    </mat-list-item>
+</mat-list>
 
-    <p>{{account.login}}</p>
-
-    <button mat-icon-button color=warn>
-        <mat-icon>delete_outline</mat-icon>
-    </button>
-</div>
+<ng-template #emptyacc>
+    <p class="noaccounts">No account here</p>
+</ng-template>

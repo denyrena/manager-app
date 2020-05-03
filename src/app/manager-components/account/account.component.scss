@@ -1,26 +1,4 @@
-button, p, img{
-    -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
-}
-.container{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center; 
-}
-
-img{
-    width: 24px;
-    height: 24px;
-    margin: 0;
-    background-size:cover;
-    background-position:center;
-    border-radius:50%;
-}
-
-p{
-    margin: 0;
-    margin-left: 5px;
-}
-
-button{
-    margin-left: auto;
+.noaccounts{
+    font-size: 12px;
+    text-align: center;
 }

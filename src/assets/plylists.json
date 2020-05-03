@@ -1,0 +1,390 @@
+{
+    "href": "https://api.spotify.com/v1/users/noiretea/playlists?offset=0&limit=20",
+    "items": [
+      {
+        "collaborative": false,
+        "description": "Spreading the infection.",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/5jHWTRibKUtbrL8WgcFuH7"
+        },
+        "href": "https://api.spotify.com/v1/playlists/5jHWTRibKUtbrL8WgcFuH7",
+        "id": "5jHWTRibKUtbrL8WgcFuH7",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da8496ab4675245a95397e520d7b",
+            "width": null
+          }
+        ],
+        "name": "Kannibalen Collection",
+        "owner": {
+          "display_name": "kannibalenrecords",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/kannibalenrecords"
+          },
+          "href": "https://api.spotify.com/v1/users/kannibalenrecords",
+          "id": "kannibalenrecords",
+          "type": "user",
+          "uri": "spotify:user:kannibalenrecords"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "NTYyLGMwYmZkMWNiZWFiMjhjNThiOWJmODU3MWRlOTI0NjM5MGZjMTRhZTM=",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/5jHWTRibKUtbrL8WgcFuH7/tracks",
+          "total": 66
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:5jHWTRibKUtbrL8WgcFuH7"
+      },
+      {
+        "collaborative": false,
+        "description": "The central location of the Kannibalen infection!",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/2UDTQ2VbWGKAR6OB2Qkhyv"
+        },
+        "href": "https://api.spotify.com/v1/playlists/2UDTQ2VbWGKAR6OB2Qkhyv",
+        "id": "2UDTQ2VbWGKAR6OB2Qkhyv",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://mosaic.scdn.co/640/ab67616d0000b27319f1f25ed3e75a629899ef12ab67616d0000b273b54d922889237509b382ed5cab67616d0000b273b9890b61e676e27095ce1a84ab67616d0000b273d35e18143c6b5ea9dc55a382",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://mosaic.scdn.co/300/ab67616d0000b27319f1f25ed3e75a629899ef12ab67616d0000b273b54d922889237509b382ed5cab67616d0000b273b9890b61e676e27095ce1a84ab67616d0000b273d35e18143c6b5ea9dc55a382",
+            "width": 300
+          },
+          {
+            "height": 60,
+            "url": "https://mosaic.scdn.co/60/ab67616d0000b27319f1f25ed3e75a629899ef12ab67616d0000b273b54d922889237509b382ed5cab67616d0000b273b9890b61e676e27095ce1a84ab67616d0000b273d35e18143c6b5ea9dc55a382",
+            "width": 60
+          }
+        ],
+        "name": "#KanniFam",
+        "owner": {
+          "display_name": "kannibalenrecords",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/kannibalenrecords"
+          },
+          "href": "https://api.spotify.com/v1/users/kannibalenrecords",
+          "id": "kannibalenrecords",
+          "type": "user",
+          "uri": "spotify:user:kannibalenrecords"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "MzU5LDk2ZTg1MTJiYmUyZGJkYWJhMDU5MWVjMWIyNjhkOGViNjg1MzBlMzc=",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/2UDTQ2VbWGKAR6OB2Qkhyv/tracks",
+          "total": 270
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:2UDTQ2VbWGKAR6OB2Qkhyv"
+      },
+      {
+        "collaborative": false,
+        "description": "If you have always wondered what kind of music inspires me, you're in the right playlist. It's essentially Hard &amp; Majestic. From classical to hard stuff. You will find my songs as well as my favorite sh*t I listen to on a daily basis. Pretty much if Beethoven would hangout with Dr Dre... ",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/5Z7ExefDzQrdUDeSERGpV4"
+        },
+        "href": "https://api.spotify.com/v1/playlists/5Z7ExefDzQrdUDeSERGpV4",
+        "id": "5Z7ExefDzQrdUDeSERGpV4",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da84be683829ea5bfa67ee2a2da5",
+            "width": null
+          }
+        ],
+        "name": "Apashe's Majestic Playlist",
+        "owner": {
+          "display_name": "Apashe",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/2277cxc7dt7asw6os6canzgoy"
+          },
+          "href": "https://api.spotify.com/v1/users/2277cxc7dt7asw6os6canzgoy",
+          "id": "2277cxc7dt7asw6os6canzgoy",
+          "type": "user",
+          "uri": "spotify:user:2277cxc7dt7asw6os6canzgoy"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "MTQ2LDcwYjdmZWE5NTFjMzU4MjBmMTQyYmE0Zjg3NGZhN2FhYzFkNDMyZGE=",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/5Z7ExefDzQrdUDeSERGpV4/tracks",
+          "total": 101
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:5Z7ExefDzQrdUDeSERGpV4"
+      },
+      {
+        "collaborative": false,
+        "description": "Current vibes <a href=\"https://emojipedia.org/fire/\">🔥</a> | Find us on <a href=\"https://soundcloud.com/thetechthievesmusic\">SoundCloud</a> &amp; <a href=\"https://www.youtube.com/c/thetechthieves\">YouTube</a>, follow on <a href=\"https://www.instagram.com/thetechthieves/\">Instagram</a>, <a href=\"https://twitter.com/thetechthieves\">Twitter</a> &amp; <a href=\"https://www.facebook.com/TheTechThievesMusic/\">Facebook</a>",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/3qxCYoRc0GPz3DN50CSo5h"
+        },
+        "href": "https://api.spotify.com/v1/playlists/3qxCYoRc0GPz3DN50CSo5h",
+        "id": "3qxCYoRc0GPz3DN50CSo5h",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da84224607862182a73e692dfabb",
+            "width": null
+          }
+        ],
+        "name": "Vibes",
+        "owner": {
+          "display_name": "The Tech Thieves",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/1253357247"
+          },
+          "href": "https://api.spotify.com/v1/users/1253357247",
+          "id": "1253357247",
+          "type": "user",
+          "uri": "spotify:user:1253357247"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "NzE2LDU4ZDUwMGNlYTMyN2EzZmRjMWE0MjdjZGMzNWJiZjJlZGE0ZWE3YWY=",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/3qxCYoRc0GPz3DN50CSo5h/tracks",
+          "total": 28
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:3qxCYoRc0GPz3DN50CSo5h"
+      },
+      {
+        "collaborative": false,
+        "description": "&quot;GET CRANKED&quot; is Crankdat&#x27;s brand new workout-inspired playlist perfect for cardio, heavy lifting, and any form of exercise!",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/2TlnNBNGRUnjeWrOsx4GAy"
+        },
+        "href": "https://api.spotify.com/v1/playlists/2TlnNBNGRUnjeWrOsx4GAy",
+        "id": "2TlnNBNGRUnjeWrOsx4GAy",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da84a6e7965e1bda3f9b3fd7b315",
+            "width": null
+          }
+        ],
+        "name": "GET CRANKED",
+        "owner": {
+          "display_name": "Crankdat",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/8k4ejl58ho9j1tg4yvo03fd7b"
+          },
+          "href": "https://api.spotify.com/v1/users/8k4ejl58ho9j1tg4yvo03fd7b",
+          "id": "8k4ejl58ho9j1tg4yvo03fd7b",
+          "type": "user",
+          "uri": "spotify:user:8k4ejl58ho9j1tg4yvo03fd7b"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "OTEzLDg4NzVjODIyYjMxMzJiOTY3ZTFhZjFmMTUwZWU5NGExOGFiMjNkNTI=",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/2TlnNBNGRUnjeWrOsx4GAy/tracks",
+          "total": 125
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:2TlnNBNGRUnjeWrOsx4GAy"
+      },
+      {
+        "collaborative": false,
+        "description": "You can find all Trap Cords Releases right here.",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/3g17oZCDaqIvk6UvROZ1dX"
+        },
+        "href": "https://api.spotify.com/v1/playlists/3g17oZCDaqIvk6UvROZ1dX",
+        "id": "3g17oZCDaqIvk6UvROZ1dX",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da84cb69380af5598256687a3792",
+            "width": null
+          }
+        ],
+        "name": "Trap Cords | Full Catalog",
+        "owner": {
+          "display_name": "trapcords",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/trapcords"
+          },
+          "href": "https://api.spotify.com/v1/users/trapcords",
+          "id": "trapcords",
+          "type": "user",
+          "uri": "spotify:user:trapcords"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "MTEwLDVhYjllYzM1MmIxOTFiZmE3OTU5MzFjMWMzNWRmZTYyMmVlOWU2NWM=",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/3g17oZCDaqIvk6UvROZ1dX/tracks",
+          "total": 20
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:3g17oZCDaqIvk6UvROZ1dX"
+      },
+      {
+        "collaborative": false,
+        "description": "my <a href=\"https://soundcloud.com/flyboy-official/sets/tracks\">latest tunes</a> + favorites from other artists. ☁",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/3QXYksLeyoKUixpomAoR9j"
+        },
+        "href": "https://api.spotify.com/v1/playlists/3QXYksLeyoKUixpomAoR9j",
+        "id": "3QXYksLeyoKUixpomAoR9j",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da84b1231c238d7087facba625e3",
+            "width": null
+          }
+        ],
+        "name": "Flyboy: The Skyride",
+        "owner": {
+          "display_name": "Flyboy",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/1195405800"
+          },
+          "href": "https://api.spotify.com/v1/users/1195405800",
+          "id": "1195405800",
+          "type": "user",
+          "uri": "spotify:user:1195405800"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "MTc4Miw4Y2E0NDYwZWE0MDg2YTBhNWU4ZjI5N2Q4YmVkYzZiZmQ0YjY1NzI2",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/3QXYksLeyoKUixpomAoR9j/tracks",
+          "total": 50
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:3QXYksLeyoKUixpomAoR9j"
+      },
+      {
+        "collaborative": false,
+        "description": "The Artist Union is a next gen music platform and label for up and coming artists from around the world. This playlist highlights some of our top talent and the best tracks from our community. Support the artists and The Artist Union by visiting www.theartistunion.com",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/7xRVn4q3S4bsOc4G5x36Ci"
+        },
+        "href": "https://api.spotify.com/v1/playlists/7xRVn4q3S4bsOc4G5x36Ci",
+        "id": "7xRVn4q3S4bsOc4G5x36Ci",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da8477e566091ebe62a403e19608",
+            "width": null
+          }
+        ],
+        "name": "theartistunion",
+        "owner": {
+          "display_name": "theartistunion",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/theartistunion"
+          },
+          "href": "https://api.spotify.com/v1/users/theartistunion",
+          "id": "theartistunion",
+          "type": "user",
+          "uri": "spotify:user:theartistunion"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "MzUyOCw0YmFkZTZhZjM5MjRiZDc2OWJmYjNmMjk4NjkyZjYxMzI2ODAxYjJj",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/7xRVn4q3S4bsOc4G5x36Ci/tracks",
+          "total": 17
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:7xRVn4q3S4bsOc4G5x36Ci"
+      },
+      {
+        "collaborative": false,
+        "description": "",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/3n1yIKSp2FliMx9T6ckxwe"
+        },
+        "href": "https://api.spotify.com/v1/playlists/3n1yIKSp2FliMx9T6ckxwe",
+        "id": "3n1yIKSp2FliMx9T6ckxwe",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://mosaic.scdn.co/640/ab67616d0000b2730b419ae6a9dd679b4cac06d1ab67616d0000b273447d1840566db5d7ca366934ab67616d0000b273f585b78a5e260eb9dc1550deab67616d0000b273ffb7eaada626e12cffdaab04",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://mosaic.scdn.co/300/ab67616d0000b2730b419ae6a9dd679b4cac06d1ab67616d0000b273447d1840566db5d7ca366934ab67616d0000b273f585b78a5e260eb9dc1550deab67616d0000b273ffb7eaada626e12cffdaab04",
+            "width": 300
+          },
+          {
+            "height": 60,
+            "url": "https://mosaic.scdn.co/60/ab67616d0000b2730b419ae6a9dd679b4cac06d1ab67616d0000b273447d1840566db5d7ca366934ab67616d0000b273f585b78a5e260eb9dc1550deab67616d0000b273ffb7eaada626e12cffdaab04",
+            "width": 60
+          }
+        ],
+        "name": "[LESS LYRICS | MORE 808s]",
+        "owner": {
+          "display_name": "Moritz Büsching",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/1167601800"
+          },
+          "href": "https://api.spotify.com/v1/users/1167601800",
+          "id": "1167601800",
+          "type": "user",
+          "uri": "spotify:user:1167601800"
+        },
+        "primary_color": null,
+        "public": true,
+        "snapshot_id": "NTgsYTcwMjhmZjI4YWUxMDAzMjBjZjVjZjgwNzIwMGI2NTE2ZDMxMWYwNw==",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/3n1yIKSp2FliMx9T6ckxwe/tracks",
+          "total": 40
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:3n1yIKSp2FliMx9T6ckxwe"
+      },
+      {
+        "collaborative": false,
+        "description": "Official <a href=\"https://www.youtube.com/user/OfficialTrapCity\">Trap City</a> playlist with the best collection of YouTube uploads, personal favorites and more fine Trap &amp; Bass music. Updated weekly. Make sure to follow 👇",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/playlist/7Kk0KvfzcaX4QLtli1rIBK"
+        },
+        "href": "https://api.spotify.com/v1/playlists/7Kk0KvfzcaX4QLtli1rIBK",
+        "id": "7Kk0KvfzcaX4QLtli1rIBK",
+        "images": [
+          {
+            "height": null,
+            "url": "https://i.scdn.co/image/ab67706c0000da84a37c09924832e8ed47603733",
+            "width": null
+          }
+        ],
+        "name": "Trap City",
+        "owner": {
+          "display_name": "Trap City",
+          "external_urls": {
+            "spotify": "https://open.spotify.com/user/officialtrapcity"
+          },
+          "href": "https://api.spotify.com/v1/users/officialtrapcity",
+          "id": "officialtrapcity",
+          "type": "user",
+          "uri": "spotify:user:officialtrapcity"
+        },
+        "primary_color": null,
+        "public": false,
+        "snapshot_id": "MzUwNSw1ZGZlYzcwYWY0NmM0ZmM5ZGY2Mzg1OTkyZDcwMDk1NmZlYjVhYjY1",
+        "tracks": {
+          "href": "https://api.spotify.com/v1/playlists/7Kk0KvfzcaX4QLtli1rIBK/tracks",
+          "total": 91
+        },
+        "type": "playlist",
+        "uri": "spotify:playlist:7Kk0KvfzcaX4QLtli1rIBK"
+      }
+    ],
+    "limit": 20,
+    "next": null,
+    "offset": 0,
+    "previous": null,
+    "total": 10
+  }

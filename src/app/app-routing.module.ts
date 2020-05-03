@@ -1,19 +1,26 @@
+import { MySpotifyAuthInterceptor } from './interceptors/my-spotify-auth.interceptor';
 import { HomeComponent } from './manager-components/home/home.component';
-import { LoginComponent } from './manager-components/login/login.component';
-import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { SpotifyAuthModule } from 'spotify-auth';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '/home' }
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent },
+    SpotifyAuthModule.authRoutes()[0],
+    { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes), SpotifyAuthModule.forRoot()],
+    exports: [RouterModule],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MySpotifyAuthInterceptor,
+            multi: true,
+        },
+    ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

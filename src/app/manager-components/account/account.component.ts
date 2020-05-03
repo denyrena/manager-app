@@ -1,4 +1,4 @@
-import { Account } from './../../manager-core/entities/account';
+import { Account } from '../../manager-core/entities/account.class';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
   @Input()
-  account: Account;
+  account: any;
 
   constructor() { }
 

@@ -1,21 +1,34 @@
-<mat-expansion-panel *ngFor="let platform of platforms | keyvalue">
+<mat-expansion-panel *ngFor="let platform of platforms | keyvalue" [expanded]="isPlatormExpanded(platform.value)">
     <mat-expansion-panel-header>
-        <mat-panel-title>
-            Your {{platform.value}} accounts
-        </mat-panel-title>
+        <mat-panel-title> Your {{ platform.value }} account </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <mat-list *ngIf="accounts.length; else emptyacc">
-         <mat-list-item *ngFor="let account of getAccountsByPlatform(platform.key)">
-            <app-account [account]="account"></app-account>
-        </mat-list-item> 
-    </mat-list>
-
-    <ng-template #emptyacc>
-        <p class="noaccounts">No accounts here</p>
-    </ng-template>
+    <app-account [account]="getAccountByPlatform(platform.value)"></app-account>
 
     <mat-action-row>
-        <button mat-button color="accent" (click)="linkAccount_Click(platform.value)">Link new account!</button>
+        <div
+            *ngIf="
+                getAccountByPlatform(platform.value) == undefined;
+                else removeacc
+            "
+        >
+            <button
+                mat-button
+                color="accent"
+                (click)="linkAccount_Click(platform.value)"
+            >
+                Link account
+            </button>
+        </div>
+        <ng-template #removeacc>
+            <button
+                *ngIf="getAccountByPlatform(platform.value) != undefined"
+                mat-button
+                color="accent"
+                (click)="removeAccount_Click(platform.value)"
+            >
+                Remove account
+            </button>
+        </ng-template>
     </mat-action-row>
 </mat-expansion-panel>
