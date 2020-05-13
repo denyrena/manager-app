@@ -1,0 +1,20 @@
+.actions {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin-top: auto;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.emptypls {
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+.pls-container{
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}

@@ -1,13 +1,11 @@
 import { SpotifyTrackUI } from './../../manager-core/entities/spotify/spotify-track-ui.class';
-import { SpotifyTrack } from './../../manager-core/entities/spotify/track.inteface';
-import { MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PlaylistMessageService } from 'src/app/services/spotify/playlist-message.service';
 import { SpotifyUserInfoService } from 'src/app/services/spotify/spotify-user-info.service';
-import { TokenService } from 'spotify-auth';
-import { switchMap } from 'rxjs/operators';
-import { SpotifyPlaylistTrack } from 'src/app/manager-core/entities/spotify/spotify-playlist-track.interface';
-
+import { map, tap, throttleTime, scan, switchMap } from 'rxjs/operators';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-tracks',
@@ -15,54 +13,74 @@ import { SpotifyPlaylistTrack } from 'src/app/manager-core/entities/spotify/spot
     styleUrls: ['./tracks.component.scss'],
 })
 export class TracksComponent implements OnInit {
-    public dataSource: MatTableDataSource<SpotifyTrackUI>;
-    
+    infinite: Observable<SpotifyTrackUI[]>;
 
-    public displayedColumns = ['image', 'name', 'artist', 'album', 'length'];
+    @ViewChild(CdkVirtualScrollViewport)
+    private viewport: CdkVirtualScrollViewport;
+    private offset = new BehaviorSubject<number>(1);
+    private curOffset = 0;
+    private limit = 1;
+    private batchSize = 50;
+    private playlistId = '';
 
     constructor(
         private pms: PlaylistMessageService,
         private spotyInfo: SpotifyUserInfoService,
-        private tokenSvc: TokenService
+        private notify: MatSnackBar
     ) {}
 
     ngOnInit(): void {
-        this.pms.currentMessage.subscribe((id) => this.initLoadingTracks(id));
+        this.pms.currentMessage.subscribe((id) => {
+            this.curOffset = 0;
+            this.offset = new BehaviorSubject<number>(0);
+            this.playlistId = id;
+            this.infinite = this.offset.pipe(
+                throttleTime(500),
+                switchMap((n) => this.getSpotifyBatch(n)),
+                scan((acc, batch) => acc.concat(batch))
+            );
+        });
     }
 
-    private initLoadingTracks(id: string) {
-        const plstream = this.tokenSvc.authTokens.pipe(
-            switchMap((x) => {
-                return this.spotyInfo.fetchUserTracks(id);
-            })
-        );
+    nextBatch(e: any) {
+        if (this.curOffset > this.limit) {
+            return;
+        }
 
-        plstream.subscribe((data) => this.prepareTracks(data.items));
+        const end = this.viewport.getRenderedRange().end;
+        const total = this.viewport.getDataLength();
+
+        if (end === total) {
+            this.curOffset += 50;
+            this.offset.next(this.curOffset);
+        }
     }
 
-    private prepareTracks(data: SpotifyPlaylistTrack[]) {
-        this.dataSource = new MatTableDataSource(
-            data.map((t) => this.prepareTrack(t.track))
-        );
-    }
-
-    private prepareTrack(track: SpotifyTrack): SpotifyTrackUI {
-        const uiTrack = new SpotifyTrackUI();
-        uiTrack.album = this.shorten(track.album.name, 35);
-        uiTrack.artist = this.getArtists(track.artists);
-        uiTrack.image = track.album.images[track.album.images.length - 1].url;
-        uiTrack.length = this.getLength(track.duration_ms);
-        uiTrack.name = track.name;
-
-        return uiTrack;
+    private getSpotifyBatch(offset: number) {
+        return this.spotyInfo
+            .fetchPlaylistTracks(this.playlistId, this.batchSize, offset)
+            .pipe(
+                tap((page) => (this.limit = page.limit)),
+                switchMap((page) => {
+                    return this.spotyInfo
+                        .libraryContainsTrack(page.items.map((i) => i.track.id))
+                        .pipe(
+                            map((ids) =>
+                                page.items.map((t, i) =>
+                                    this.prepareTrack(t.track, ids[i])
+                                )
+                            )
+                        );
+                })
+            );
     }
 
     private getArtists(artists: any): any {
-        let artistsString = artists
+        const artistsString = artists
             .map((a) => a.name)
             .join(', ')
             .toString();
-        return this.shorten(artistsString, 50);
+        return this.shorten(artistsString, 30);
     }
 
     private shorten(source: string, length: number): string {
@@ -74,5 +92,36 @@ export class TracksComponent implements OnInit {
 
     private getLength(length: number): string {
         return new Date(length).toISOString().substr(14, 5);
+    }
+
+    private prepareTrack(
+        track: SpotifyApi.TrackObjectFull,
+        isFav: boolean
+    ): SpotifyTrackUI {
+        const uiTrack = new SpotifyTrackUI();
+        uiTrack.album = this.shorten(track.album.name, 35);
+        uiTrack.artist = this.getArtists(track.artists);
+        uiTrack.image = track.album.images[0].url;
+        uiTrack.length = this.getLength(track.duration_ms);
+        uiTrack.name = this.shorten(track.name, 15);
+        uiTrack.id = track.id;
+        uiTrack.isFavourite = isFav;
+
+        return uiTrack;
+    }
+
+    toggleFavourite(track: SpotifyTrackUI) {
+        const promise = track.isFavourite
+            ? this.spotyInfo.unFavouriteTrack(track.id)
+            : this.spotyInfo.favouriteTrack(track.id);
+
+        promise.then(() => {
+            track.isFavourite = !track.isFavourite;
+            this.notify.open(
+                track.isFavourite
+                    ? 'Track was added to Loved'
+                    : 'Track removed from Loved'
+            );
+        });
     }
 }

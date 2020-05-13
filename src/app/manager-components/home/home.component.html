@@ -3,7 +3,11 @@
         <mat-toolbar class="top-header">
             <span>Available collections</span>
         </mat-toolbar>
-        <app-playlists (SelectedPlaylistChanged)=initPlaylistLoading($event) class="playlists"></app-playlists>
+        <div class="playlists">
+            <app-playlists
+                (SelectedPlaylistChanged)="initPlaylistLoading($event)"
+            ></app-playlists>
+        </div>
     </div>
 
     <div class="main-column">

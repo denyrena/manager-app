@@ -14,7 +14,9 @@ import { MySpotifyAuthInterceptor } from './interceptors/my-spotify-auth.interce
 import { TracksComponent } from './manager-components/tracks/tracks.component';
 import { WizardComponent } from './manager-components/wizard/wizard.component';
 import { HelloComponent } from './manager-components/hello/hello.component';
-
+import { BatchSplitPipe } from './pipes/batch-split.pipe';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { CreatePlaylistDialogComponent } from './manager-components/create-playlist-dialog/create-playlist-dialog.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +29,8 @@ import { HelloComponent } from './manager-components/hello/hello.component';
         TracksComponent,
         WizardComponent,
         HelloComponent,
+        BatchSplitPipe,
+        CreatePlaylistDialogComponent,
     ],
     imports: [AppRoutingModule, NgMaterial, HttpClientModule],
     providers: [
@@ -35,7 +39,11 @@ import { HelloComponent } from './manager-components/hello/hello.component';
             useClass: MySpotifyAuthInterceptor,
             multi: true,
         },
-        SpotifyUserInfoService
+        {
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+            useValue: { duration: 1000 },
+        },
+        SpotifyUserInfoService,
     ],
     bootstrap: [AppComponent],
 })

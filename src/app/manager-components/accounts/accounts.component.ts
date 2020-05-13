@@ -1,3 +1,4 @@
+import { AccountMessageService } from './../../services/common/account-message.service';
 import { SpotifyUserInfoService } from './../../services/spotify/spotify-user-info.service';
 import { Account } from '../../manager-core/entities/account.class';
 import { Platform } from './../../manager-core/enums/platform.enum';
@@ -9,7 +10,7 @@ import {
     ScopesBuilder,
     TokenService,
 } from 'spotify-auth';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -26,7 +27,8 @@ export class AccountsComponent implements OnInit, OnDestroy {
     constructor(
         private authService: AuthService,
         private tokenSvc: TokenService,
-        private spotifyInfo: SpotifyUserInfoService
+        private spotifyInfo: SpotifyUserInfoService,
+        private ams: AccountMessageService
     ) {
         this.accounts = [];
     }
@@ -39,6 +41,12 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         const stream = this.tokenSvc.authTokens.pipe(
+            tap((t) => {
+                if (t !== '') {
+                    this.spotifyInfo.setNewtoken(t);
+                    this.ams.registerAccount();
+                }
+            }),
             switchMap((x) => {
                 return this.spotifyInfo.fetchUserInfo();
             })
@@ -70,6 +78,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
     removeAccount_Click(platform: Platform) {
         this.tokenSvc.clearToken(); // FOR SPOTIFY ONLY
         this.accounts = this.accounts.filter((a) => a.platform !== platform);
+        this.ams.unRegisterAccount();
     }
 
     private authSpotify() {

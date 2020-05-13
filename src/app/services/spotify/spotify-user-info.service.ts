@@ -1,21 +1,21 @@
-import { SpotifyTrack } from './../../manager-core/entities/spotify/track.inteface';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, defer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { SpotifyPage } from 'src/app/manager-core/entities/spotify/page.interface';
-import { SpotifyPlaylist } from 'src/app/manager-core/entities/spotify/playlist.class';
-import { SpotifyPlaylistTrack } from 'src/app/manager-core/entities/spotify/spotify-playlist-track.interface';
+import SpotifyWebApi from 'spotify-web-api-node';
+import { RequestResponceObject } from 'src/app/manager-core/entities/spotify/request-responce.inteface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SpotifyUserInfoService {
+    private api: SpotifyWebApi = new SpotifyWebApi({
+        clientId: 'fcecfc72172e4cd267473117a17cbd4d',
+        clientSecret: '',
+        redirectUri: 'http://localhost:4200/authorize',
+    });
+
     private readonly apiUserUrl = 'https://api.spotify.com/v1/me';
-    private readonly apiPlaylistsUrl =
-        'https://api.spotify.com/v1/me/playlists';
-    private readonly favTracksUrl = 'https://api.spotify.com/v1/me/tracks';
-    private readonly playlistTracksUrl =
-        'https://api.spotify.com/v1/playlists/{id}/tracks';
 
     constructor(private http: HttpClient) {}
 
@@ -23,22 +23,47 @@ export class SpotifyUserInfoService {
         return this.http.get(this.apiUserUrl);
     }
 
-    public fetchUserPlaylists(): Observable<SpotifyPage<SpotifyPlaylist>> {
-        return this.http.get(this.apiPlaylistsUrl) as Observable<
-            SpotifyPage<SpotifyPlaylist>
-        >;
+    public fetchUserPlaylists(): Observable<
+        SpotifyApi.PlaylistObjectSimplified[]
+    > {
+        return (defer(() => this.api.getUserPlaylists()) as Observable<
+            RequestResponceObject<SpotifyApi.ListOfUsersPlaylistsResponse>
+        >).pipe(map((data) => data.body.items));
     }
 
-    public fetchUserTracks(
-        id: string
-    ): Observable<SpotifyPage<SpotifyPlaylistTrack>> {
-        let url =
-            id === 'spotify-fav-tracks'
-                ? this.favTracksUrl
-                : this.playlistTracksUrl.replace('{id}', id);
+    setNewtoken(token: string) {
+        this.api.resetAccessToken();
+        this.api.setAccessToken(token);
+    }
 
-        return this.http.get(url) as Observable<
-            SpotifyPage<SpotifyPlaylistTrack>
-        >;
+    public fetchPlaylistTracks(
+        id: string,
+        limit: number,
+        offset: number
+    ): Observable<SpotifyApi.UsersSavedTracksResponse> {
+        const responsePromise =
+            id === 'spotify-fav-tracks'
+                ? this.api.getMySavedTracks({ limit, offset })
+                : this.api.getPlaylistTracks(id, { limit, offset });
+
+        return (defer(() => responsePromise) as Observable<
+            RequestResponceObject<SpotifyApi.UsersSavedTracksResponse>
+        >).pipe(map((data) => data.body));
+    }
+
+    libraryContainsTrack(
+        ids: string[]
+    ): Observable<SpotifyApi.CheckUsersSavedTracksResponse> {
+        return (defer(() => this.api.containsMySavedTracks(ids)) as Observable<
+            RequestResponceObject<SpotifyApi.CheckUsersSavedTracksResponse>
+        >).pipe(map((data) => data.body));
+    }
+
+    favouriteTrack(id: string) {
+        return this.api.addToMySavedTracks([id]);
+    }
+
+    unFavouriteTrack(id: string) {
+        return this.api.removeFromMySavedTracks([id]);
     }
 }

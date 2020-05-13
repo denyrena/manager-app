@@ -1,10 +1,39 @@
-<mat-action-list>
-    <button mat-list-item *ngFor="let playlist of spotifyPlaylists"
-    (click)=selectPlaylist(playlist.id)>
-        <img
-            matListAvatar
-            [src]="playlist.images[playlist.images.length - 1].url"
-        />
-        <h3 matLine>{{ playlist.name }}</h3>
-    </button>
-</mat-action-list>
+<ng-container *ngIf="isNeedShow(); else emptypls">
+    <div class="pls-container">
+        <mat-action-list>
+            <button
+                mat-list-item
+                (click)="selectPlaylist('spotify-fav-tracks')"
+            >
+                <img
+                    matListAvatar
+                    src="https://open.scdn.co/cdn/images/favicon.5cb2bd30.ico"
+                />
+                <h3 matLine>Loved tracks</h3>
+            </button>
+            <button
+                mat-list-item
+                *ngFor="let playlist of playlists | async"
+                (click)="selectPlaylist(playlist.id)"
+            >
+                <img
+                    matListAvatar
+                    [src]="playlist.images[playlist.images.length - 1].url"
+                />
+                <h3 matLine>{{ playlist.name }}</h3>
+            </button>
+        </mat-action-list>
+        <mat-divider></mat-divider>
+
+        <!-- TODO DEEZER -->
+
+        <div class="actions">
+            <button mat-button color="warn">Remove Playlist</button>
+            <button mat-button color="accent">Create Playlist</button>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #emptypls>
+    <h3 class="emptypls">No accounts linked</h3>
+</ng-template>
