@@ -32,6 +32,7 @@ import { CreatePlaylistDialogComponent } from './manager-components/create-playl
         BatchSplitPipe,
         CreatePlaylistDialogComponent,
     ],
+    entryComponents: [CreatePlaylistDialogComponent],
     imports: [AppRoutingModule, NgMaterial, HttpClientModule],
     providers: [
         {
@@ -41,7 +42,7 @@ import { CreatePlaylistDialogComponent } from './manager-components/create-playl
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-            useValue: { duration: 1000 },
+            useValue: { duration: 1000, panelClass: ['mat-toolbar', 'mat-accent'] },
         },
         SpotifyUserInfoService,
     ],

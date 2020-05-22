@@ -1,1 +1,45 @@
-<p>create-playlist-dialog works!</p>
+<h1 mat-dialog-title>Create playlist</h1>
+<div mat-dialog-content>
+    <mat-form-field class="example-full-width" color="accent">
+        <mat-label>Choose platform</mat-label>
+        <mat-select
+            [formControl]="platformSelectControl"
+            required
+            [(ngModel)]="data.platform"
+        >
+            <mat-option
+                *ngFor="let platform of platforms | keyvalue"
+                [value]="platform.value"
+            >
+                {{ platform.key }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="platformSelectControl.hasError('required')">
+            Please choose platform
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" color="accent">
+        <mat-label>Enter playlist name</mat-label>
+        <input
+            matInput
+            [(ngModel)]="data.name"
+            [formControl]="plsNameInputControl"
+            autocomplete="off"
+        />
+        <mat-error *ngIf="plsNameInputControl.hasError('required')">
+            Please enter playlist name
+        </mat-error>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button
+        mat-button
+        [mat-dialog-close]="data"
+        color="accent"
+        [disabled]="!(platformSelectControl.valid && plsNameInputControl.valid)"
+    >
+        Create
+    </button>
+</div>

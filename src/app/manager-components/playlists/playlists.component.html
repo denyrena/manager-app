@@ -1,25 +1,17 @@
 <ng-container *ngIf="isNeedShow(); else emptypls">
     <div class="pls-container">
         <mat-action-list>
-            <button
-                mat-list-item
-                (click)="selectPlaylist('spotify-fav-tracks')"
-            >
-                <img
-                    matListAvatar
-                    src="https://open.scdn.co/cdn/images/favicon.5cb2bd30.ico"
-                />
-                <h3 matLine>Loved tracks</h3>
+            <button mat-list-item (click)="selectPlaylist(lovedTracksSpotify)">
+                <img matListAvatar [src]="lovedTracksSpotify.coverUri" />
+                <h3 matLine>{{ lovedTracksSpotify.name }}</h3>
             </button>
+
             <button
                 mat-list-item
                 *ngFor="let playlist of playlists | async"
-                (click)="selectPlaylist(playlist.id)"
+                (click)="selectPlaylist(playlist)"
             >
-                <img
-                    matListAvatar
-                    [src]="playlist.images[playlist.images.length - 1].url"
-                />
+                <img matListAvatar [src]="playlist.coverUri" />
                 <h3 matLine>{{ playlist.name }}</h3>
             </button>
         </mat-action-list>
@@ -28,8 +20,10 @@
         <!-- TODO DEEZER -->
 
         <div class="actions">
-            <button mat-button color="warn">Remove Playlist</button>
-            <button mat-button color="accent">Create Playlist</button>
+            <button mat-button>Remove Playlist</button>
+            <button mat-button color="accent" (click)="createPlaylist()">
+                Create Playlist
+            </button>
         </div>
     </div>
 </ng-container>

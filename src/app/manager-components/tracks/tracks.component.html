@@ -10,8 +10,9 @@
                         <button
                             mat-icon-button
                             mat-card-avatar
+                            [matMenuTriggerFor]="trackActionMenu"
+                            [matMenuTriggerData]="{ track: track }"
                             [color]="track.isFavourite ? 'accent' : ''"
-                            (click)="toggleFavourite(track)"
                         >
                             <mat-icon>favorite</mat-icon>
                         </button>
@@ -30,3 +31,33 @@
         </div>
     </cdk-virtual-scroll-viewport>
 </ng-container>
+
+<mat-menu #trackActionMenu="matMenu">
+    <ng-template matMenuContent let-data="track">
+        <button mat-menu-item (click)="toggleFavourite(data)">
+            {{ data.isFavourite ? 'Remove from Loved' : 'Add to Loved' }}
+        </button>
+        <button
+            mat-menu-item
+            [matMenuTriggerFor]="plsSelectMenu"
+            [matMenuTriggerData]="{ pls: getEditablePls(), track: data }"
+        >
+            Add to playlist
+        </button>
+        <!-- <button mat-menu-item [disabled]="!(canEditPls() | async)">
+            Remove from playlist
+        </button> -->
+    </ng-template>
+</mat-menu>
+
+<mat-menu #plsSelectMenu="matMenu">
+    <ng-template matMenuContent let-pls="pls" let-track="track">
+        <button
+            *ngFor="let p of pls | async"
+            mat-menu-item
+            (click)="addTrackToPls(track.uri, p)"
+        >
+            {{ p.name }}
+        </button>
+    </ng-template>
+</mat-menu>

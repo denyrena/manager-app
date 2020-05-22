@@ -69,9 +69,6 @@ export class AccountsComponent implements OnInit, OnDestroy {
             case Platform.Deezer:
                 this.authDeezer();
                 return;
-            case Platform.Youtube:
-                this.authYoutube();
-                return;
         }
     }
 
@@ -83,7 +80,7 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
     private authSpotify() {
         const scopes = new ScopesBuilder()
-            .withScopes(ScopesBuilder.LIBRARY)
+            .withScopes(ScopesBuilder.LIBRARY, ScopesBuilder.PLAYLISTS)
             .build();
         const ac: AuthConfig = {
             client_id: '3d292932c57948f18a984124b8dc41a1',
@@ -97,8 +94,6 @@ export class AccountsComponent implements OnInit, OnDestroy {
     }
 
     private authDeezer() {}
-
-    private authYoutube() {}
 
     getAccountByPlatform(platformKey: string): Account {
         return this.accounts.find((a) => a.platform === platformKey);

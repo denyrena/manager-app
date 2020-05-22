@@ -6,4 +6,5 @@ export class SpotifyTrackUI {
     artist: string;
     album: string;
     length: string;
+    uri: string;
 }
