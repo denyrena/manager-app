@@ -1,4 +1,3 @@
-import { Account } from '../../manager-core/entities/account.class';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({

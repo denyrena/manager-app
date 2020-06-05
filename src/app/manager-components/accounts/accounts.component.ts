@@ -1,64 +1,44 @@
+import { DeezerUser } from './../../manager-core/entities/deezer/user.i';
+import { DeezerUserInfoService } from './../../services/deezer/deezer-user-info.service';
 import { AccountMessageService } from './../../services/common/account-message.service';
 import { SpotifyUserInfoService } from './../../services/spotify/spotify-user-info.service';
-import { Account } from '../../manager-core/entities/account.class';
 import { Platform } from './../../manager-core/enums/platform.enum';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { KeyValue } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import {
     AuthConfig,
     AuthService,
     ScopesBuilder,
     TokenService,
 } from 'spotify-auth';
-import { switchMap, tap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { UIAccount } from 'src/app/manager-core/entities/UI/ui-account.class';
 
 @Component({
     selector: 'app-accounts',
     templateUrl: './accounts.component.html',
     styleUrls: ['./accounts.component.scss'],
 })
-export class AccountsComponent implements OnInit, OnDestroy {
+export class AccountsComponent implements OnInit {
     platforms = Platform;
-    private stream: Subscription | null = null;
-
-    accounts: Account[];
+    accounts: UIAccount[];
 
     constructor(
         private authService: AuthService,
         private tokenSvc: TokenService,
         private spotifyInfo: SpotifyUserInfoService,
+        private dzInfo: DeezerUserInfoService,
         private ams: AccountMessageService
-    ) {
-        this.accounts = [];
-    }
-
-    ngOnDestroy(): void {
-        if (this.stream) {
-            this.stream.unsubscribe();
-        }
-    }
+    ) {}
 
     ngOnInit(): void {
-        const stream = this.tokenSvc.authTokens.pipe(
-            tap((t) => {
-                if (t !== '') {
-                    this.spotifyInfo.setNewtoken(t);
-                    this.ams.registerAccount();
-                }
-            }),
-            switchMap((x) => {
-                return this.spotifyInfo.fetchUserInfo();
-            })
-        );
-        this.stream = stream.subscribe((x: any) => {
-            let account = new Account();
-            account.login = x['id'];
-            account.profilePhoto = x['images'][0].url;
-            account.platform = Platform.Spotify;
-
-            this.accounts.push(account);
+        this.tokenSvc.authTokens.subscribe((t) => {
+            if (t !== '') {
+                this.ams.registerAccount(Platform.Spotify, t);
+            }
         });
+
+        this.ams.restoreAccounts();
+
+        this.ams.accounts.subscribe((data) => (this.accounts = data));
     }
 
     linkAccount_Click(platform: Platform) {
@@ -73,9 +53,18 @@ export class AccountsComponent implements OnInit, OnDestroy {
     }
 
     removeAccount_Click(platform: Platform) {
-        this.tokenSvc.clearToken(); // FOR SPOTIFY ONLY
+        this.ams.unRegisterAccount(platform);
         this.accounts = this.accounts.filter((a) => a.platform !== platform);
-        this.ams.unRegisterAccount();
+    }
+
+    getAccountByPlatform(platformKey: string): UIAccount {
+        return this.accounts.find((a) => a.platform === platformKey);
+    }
+
+    isPlatormExpanded(platformKey: string): boolean {
+        return (
+            this.accounts.filter((a) => a.platform === platformKey).length > 0
+        );
     }
 
     private authSpotify() {
@@ -93,15 +82,13 @@ export class AccountsComponent implements OnInit, OnDestroy {
         this.authService.configure(ac).authorize();
     }
 
-    private authDeezer() {}
+    private authDeezer() {
+        const callbackUrl = 'http://localhost:4200/authorize1';
+        const appid = '418162';
+        const scope = 'basic_access,email';
+        const url = `https://connect.deezer.com/oauth/auth.php?app_id=${appid}&redirect_uri=${callbackUrl}&perms=${scope}&response_type=token`;
 
-    getAccountByPlatform(platformKey: string): Account {
-        return this.accounts.find((a) => a.platform === platformKey);
-    }
-
-    isPlatormExpanded(platformKey: string): boolean {
-        return (
-            this.accounts.filter((a) => a.platform === platformKey).length > 0
-        );
+        const win = window.open(encodeURI(url), '_self');
+        win.focus();
     }
 }

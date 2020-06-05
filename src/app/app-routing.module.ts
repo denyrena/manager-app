@@ -1,3 +1,4 @@
+import { DeezerAuthComponent } from './manager-components/deezer-auth/deezer-auth.component';
 import { MySpotifyAuthInterceptor } from './interceptors/my-spotify-auth.interceptor';
 import { HomeComponent } from './manager-components/home/home.component';
 import { NgModule } from '@angular/core';
@@ -9,6 +10,7 @@ const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     SpotifyAuthModule.authRoutes()[0],
+    { path: 'authorize1', component: DeezerAuthComponent },
     { path: '**', redirectTo: '/home' },
 ];
 

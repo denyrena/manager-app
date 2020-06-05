@@ -1,5 +1,5 @@
 import { UIPlaylist } from 'src/app/manager-core/entities/UI/ui-playlist.class';
-import { TokenService } from 'spotify-auth';
+import { TokenService, SpotifyAuthModule } from 'spotify-auth';
 import { TracksShowMessageService } from '../../services/spotify/tracks-show-message.service';
 import { MainContent } from './../../manager-core/enums/main-content.enum';
 import { Component, OnInit } from '@angular/core';

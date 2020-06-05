@@ -17,6 +17,7 @@ import { HelloComponent } from './manager-components/hello/hello.component';
 import { BatchSplitPipe } from './pipes/batch-split.pipe';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { CreatePlaylistDialogComponent } from './manager-components/create-playlist-dialog/create-playlist-dialog.component';
+import { DeezerAuthComponent } from './manager-components/deezer-auth/deezer-auth.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { CreatePlaylistDialogComponent } from './manager-components/create-playl
         HelloComponent,
         BatchSplitPipe,
         CreatePlaylistDialogComponent,
+        DeezerAuthComponent,
     ],
     entryComponents: [CreatePlaylistDialogComponent],
     imports: [AppRoutingModule, NgMaterial, HttpClientModule],

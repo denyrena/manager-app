@@ -33,9 +33,9 @@ export class PlaylistsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.playlists = this.ams.accountRegistered.pipe(
-            switchMap(() => this.refreshPlaylists())
-        );
+        // this.playlists = this.ams.accountRegistered.pipe(
+        //     switchMap(() => this.refreshPlaylists())
+        // );
     }
 
     private refreshPlaylists(): Observable<UIPlaylist[]> {
@@ -93,6 +93,6 @@ export class PlaylistsComponent implements OnInit {
     }
 
     public isNeedShow(): boolean {
-        return this.ams.hasAccounts();
+        return true;
     }
 }
