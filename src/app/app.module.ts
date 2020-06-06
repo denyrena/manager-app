@@ -9,7 +9,7 @@ import { AccountsComponent } from './manager-components/accounts/accounts.compon
 import { ActionsComponent } from './manager-components/actions/actions.component';
 import { PlaylistsComponent } from './manager-components/playlists/playlists.component';
 import { AccountComponent } from './manager-components/account/account.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClientJsonpModule } from '@angular/common/http';
 import { MySpotifyAuthInterceptor } from './interceptors/my-spotify-auth.interceptor';
 import { TracksComponent } from './manager-components/tracks/tracks.component';
 import { WizardComponent } from './manager-components/wizard/wizard.component';
@@ -35,7 +35,7 @@ import { DeezerAuthComponent } from './manager-components/deezer-auth/deezer-aut
         DeezerAuthComponent,
     ],
     entryComponents: [CreatePlaylistDialogComponent],
-    imports: [AppRoutingModule, NgMaterial, HttpClientModule],
+    imports: [AppRoutingModule, NgMaterial, HttpClientModule, HttpClientJsonpModule],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
@@ -44,7 +44,10 @@ import { DeezerAuthComponent } from './manager-components/deezer-auth/deezer-aut
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-            useValue: { duration: 1000, panelClass: ['mat-toolbar', 'mat-accent'] },
+            useValue: {
+                duration: 1000,
+                panelClass: ['mat-toolbar', 'mat-accent'],
+            },
         },
         SpotifyUserInfoService,
     ],

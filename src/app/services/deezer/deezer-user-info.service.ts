@@ -37,7 +37,7 @@ export class DeezerUserInfoService {
 
     api(url: string, hasQueryParms: boolean): Observable<any> {
         const accessToken = this.getAccessTokenString(!hasQueryParms);
-        return this.http.get(url + accessToken) as Observable<any>;
+        return this.http.jsonp(url + accessToken, 'callback') as Observable<any>;
     }
 
     public fetchPlaylistTracks(
@@ -55,7 +55,7 @@ export class DeezerUserInfoService {
 
     private getAccessTokenString(isfirst: boolean): string {
         return isfirst
-            ? `?access_token=${this.token}`
-            : `&access_token=${this.token}`;
+            ? `?access_token=${this.token}&output=jsonp`
+            : `&access_token=${this.token}&output=jsonp`;
     }
 }
