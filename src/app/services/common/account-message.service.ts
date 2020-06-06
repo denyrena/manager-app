@@ -35,7 +35,6 @@ export class AccountMessageService {
                 .fetchUserInfo()
                 .subscribe((data) => this.AddNewAccount(data, token, platform));
         }
-
     }
     unRegisterAccount(platform: Platform) {
         this.tokenSvc.clearToken(); // FOR SPOTIFY ONLY
@@ -65,7 +64,7 @@ export class AccountMessageService {
         const availableAccounts = [];
         const deezerStorage = sessionStorage.getItem(Platform.Deezer);
         const spotifyStorage = sessionStorage.getItem(Platform.Spotify);
-        
+
         if (deezerStorage) {
             const dzAcc = JSON.parse(deezerStorage) as UIAccount;
             availableAccounts.push(dzAcc);
@@ -78,5 +77,13 @@ export class AccountMessageService {
         }
 
         this.accounts$.next(availableAccounts);
+    }
+
+    isNeedShow(platform: Platform): boolean {
+        if (platform) {
+            return sessionStorage.getItem(platform) !== null;
+        }
+
+        return sessionStorage.length > 0;
     }
 }

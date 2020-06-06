@@ -1,10 +1,11 @@
+import { DeezerUserInfoService } from './../../services/deezer/deezer-user-info.service';
 import { ShowTracksMessage } from './../../manager-core/entities/UI/show-tracks-message.class';
 import { NewPlaylistName } from './../../manager-core/entities/new-playlist-name.interface';
 import { Platform } from './../../manager-core/enums/platform.enum';
 import { AccountMessageService } from './../../services/common/account-message.service';
 import { SpotifyUserInfoService } from './../../services/spotify/spotify-user-info.service';
 import { Component, OnInit } from '@angular/core';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreatePlaylistDialogComponent } from '../create-playlist-dialog/create-playlist-dialog.component';
@@ -19,31 +20,53 @@ import { ShowMode } from 'src/app/manager-core/enums/show-mode.enum';
     styleUrls: ['./playlists.component.scss'],
 })
 export class PlaylistsComponent implements OnInit {
-    public playlists: Observable<UIPlaylist[]>;
+    public spotyPlaylists: Observable<UIPlaylist[]>;
+    public dzPlaylists: Observable<UIPlaylist[]>;
     public lovedTracksSpotify = UIPlaylist.getLovedTracksPlaylist(
         Platform.Spotify
+    );
+    public lovedTracksDeezer = UIPlaylist.getLovedTracksPlaylist(
+        Platform.Deezer
     );
 
     constructor(
         private tsms: TracksShowMessageService,
         private spotyInfo: SpotifyUserInfoService,
+        private dzInfo: DeezerUserInfoService,
         private ams: AccountMessageService,
         private dialog: MatDialog,
         private notify: MatSnackBar
     ) {}
 
     ngOnInit(): void {
-        // this.playlists = this.ams.accountRegistered.pipe(
-        //     switchMap(() => this.refreshPlaylists())
-        // );
+        this.ams.accounts.subscribe((accs) =>
+            accs.forEach((acc) => {
+                this.refreshPlaylistsOnPlatform(acc.platform);
+            })
+        );
     }
 
-    private refreshPlaylists(): Observable<UIPlaylist[]> {
-        return this.spotyInfo
+    private refreshPlaylistsOnPlatform(platform: Platform): void {
+        platform === Platform.Spotify
+            ? this.loadSpotyPlaylists()
+            : this.loadDeezerPlaylists();
+    }
+
+    private loadSpotyPlaylists(): void {
+        this.spotyPlaylists = this.spotyInfo
             .fetchUserPlaylists()
             .pipe(
                 map((pls) =>
                     pls.map((p) => UIPlaylist.createFromSpotifyRawData(p))
+                )
+            );
+    }
+    private loadDeezerPlaylists(): void {
+        this.dzPlaylists = this.dzInfo
+            .fetchUserPlaylists()
+            .pipe(
+                map((pls) =>
+                    pls.data.map((p) => UIPlaylist.createFromDeezerRawData(p))
                 )
             );
     }
@@ -76,7 +99,7 @@ export class PlaylistsComponent implements OnInit {
                                 response.body.name +
                                 ' successfully created!'
                         );
-                        this.playlists = this.refreshPlaylists();
+                        this.refreshPlaylistsOnPlatform(data.platform);
                     });
                 return;
             }
@@ -92,7 +115,7 @@ export class PlaylistsComponent implements OnInit {
         this.tsms.callPlaylistInit(message);
     }
 
-    public isNeedShow(): boolean {
-        return true;
+    public isNeedShow(platform?: Platform): boolean {
+        return this.ams.isNeedShow(platform);
     }
 }

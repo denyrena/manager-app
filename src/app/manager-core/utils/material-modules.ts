@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
 
 export const NgMaterial = [
     BrowserModule,
@@ -36,4 +37,5 @@ export const NgMaterial = [
     MatSelectModule,
     ReactiveFormsModule,
     MatMenuModule,
+    MatTabsModule,
 ];

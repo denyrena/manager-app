@@ -12,9 +12,20 @@
     margin-top: 10px;
 }
 
+.small{
+    height: 25px;
+    width: 25px;
+    margin-right: 3px;
+}
 
 .pls-container{
     height: 100%;
     display: flex;
     flex-flow: column nowrap;
 }
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+    min-width: 100px!important;
+    padding: 3px!important;
+    margin: 3px!important;
+   }

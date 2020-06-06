@@ -1,21 +1,63 @@
 <ng-container *ngIf="isNeedShow(); else emptypls">
     <div class="pls-container">
-        <mat-action-list>
-            <button mat-list-item (click)="selectPlaylist(lovedTracksSpotify)">
-                <img matListAvatar [src]="lovedTracksSpotify.coverUri" />
-                <h3 matLine>{{ lovedTracksSpotify.name }}</h3>
-            </button>
+        <mat-tab-group mat-align-tabs="center" color="accent">
+            <mat-tab *ngIf="isNeedShow(lovedTracksSpotify.platform)">
+                <ng-template mat-tab-label>
+                    <img class="small" [src]="lovedTracksSpotify.coverUri" />
+                    Spotify
+                </ng-template>
+                <mat-action-list>
+                    <button
+                        mat-list-item
+                        (click)="selectPlaylist(lovedTracksSpotify)"
+                    >
+                        <img
+                            matListAvatar
+                            [src]="lovedTracksSpotify.coverUri"
+                        />
+                        <h3 matLine>{{ lovedTracksSpotify.name }}</h3>
+                    </button>
 
-            <button
-                mat-list-item
-                *ngFor="let playlist of playlists | async"
-                (click)="selectPlaylist(playlist)"
-            >
-                <img matListAvatar [src]="playlist.coverUri" />
-                <h3 matLine>{{ playlist.name }}</h3>
-            </button>
-        </mat-action-list>
-        <mat-divider></mat-divider>
+                    <button
+                        mat-list-item
+                        *ngFor="let playlist of spotyPlaylists | async"
+                        (click)="selectPlaylist(playlist)"
+                    >
+                        <img matListAvatar [src]="playlist.coverUri" />
+                        <h3 matLine>{{ playlist.name }}</h3>
+                    </button>
+                </mat-action-list>
+                <mat-divider></mat-divider>
+            </mat-tab>
+
+            <mat-tab *ngIf="isNeedShow(lovedTracksDeezer.platform)">
+                <ng-template mat-tab-label>
+                    <img class="small" [src]="lovedTracksDeezer.coverUri" />
+                    Deezer
+                </ng-template>
+                <mat-action-list>
+                    <button
+                        mat-list-item
+                        (click)="selectPlaylist(lovedTracksDeezer)"
+                    >
+                        <img matListAvatar [src]="lovedTracksDeezer.coverUri" />
+                        <h3 matLine>{{ lovedTracksDeezer.name }}</h3>
+                    </button>
+
+                    <button
+                        mat-list-item
+                        *ngFor="let playlist of dzPlaylists | async"
+                        (click)="selectPlaylist(playlist)"
+                    >
+                        <img matListAvatar [src]="playlist.coverUri" />
+                        <h3 matLine>
+                            {{ playlist.name }}
+                        </h3>
+                    </button>
+                </mat-action-list>
+                <mat-divider></mat-divider>
+            </mat-tab>
+        </mat-tab-group>
 
         <!-- TODO DEEZER -->
 

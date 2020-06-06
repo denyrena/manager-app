@@ -1,3 +1,4 @@
+import { DeezerUserInfoService } from './../../services/deezer/deezer-user-info.service';
 import { UITrack } from './../../manager-core/entities/UI/ui-track.class';
 import { UIPlaylist } from 'src/app/manager-core/entities/UI/ui-playlist.class';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -24,12 +25,13 @@ export class TracksComponent implements OnInit {
     private offset = new BehaviorSubject<number>(1);
     private curOffset = 0;
     private limit = 1;
-    private batchSize = 50;
+    private batchSize = 25;
     private msg: ShowTracksMessage<UIPlaylist>;
 
     constructor(
         private pms: TracksShowMessageService,
         private spotyInfo: SpotifyUserInfoService,
+        private dzInfo: DeezerUserInfoService,
         private notify: MatSnackBar
     ) {}
 
@@ -49,7 +51,8 @@ export class TracksComponent implements OnInit {
         const total = this.viewport.getDataLength();
 
         if (end === total) {
-            this.curOffset += 50;
+            console.log(this.curOffset, ' of ', this.limit);
+            this.curOffset += this.batchSize;
             this.offset.next(this.curOffset);
         }
     }
@@ -115,10 +118,22 @@ export class TracksComponent implements OnInit {
         if (platform === Platform.Spotify) {
             return this.getSpotifyBatch(n, pls);
         } else if (platform === Platform.Deezer) {
-            return null;
+            return this.getDeezerBatch(n, pls);
         } else {
             throw new Error('');
         }
+    }
+    getDeezerBatch(offset: number, pls: UIPlaylist): Observable<UITrack[]> {
+        return this.dzInfo
+            .fetchPlaylistTracks(pls.id, this.batchSize, offset)
+            .pipe(
+                tap((page) => (this.limit = page.total)),
+                map((page) =>
+                    page.data.map((t, i) =>
+                        UITrack.createFromDeezerRawData(t, false)
+                    )
+                )
+            );
     }
     private getSpotifyBatch(
         offset: number,
@@ -127,7 +142,7 @@ export class TracksComponent implements OnInit {
         return this.spotyInfo
             .fetchPlaylistTracks(pls.id, this.batchSize, offset)
             .pipe(
-                tap((page) => (this.limit = page.limit)),
+                tap((page) => (this.limit = page.total)),
                 switchMap((page) => {
                     return this.spotyInfo
                         .libraryContainsTrack(page.items.map((i) => i.track.id))

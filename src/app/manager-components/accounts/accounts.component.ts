@@ -1,7 +1,4 @@
-import { DeezerUser } from './../../manager-core/entities/deezer/user.i';
-import { DeezerUserInfoService } from './../../services/deezer/deezer-user-info.service';
 import { AccountMessageService } from './../../services/common/account-message.service';
-import { SpotifyUserInfoService } from './../../services/spotify/spotify-user-info.service';
 import { Platform } from './../../manager-core/enums/platform.enum';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -24,8 +21,6 @@ export class AccountsComponent implements OnInit {
     constructor(
         private authService: AuthService,
         private tokenSvc: TokenService,
-        private spotifyInfo: SpotifyUserInfoService,
-        private dzInfo: DeezerUserInfoService,
         private ams: AccountMessageService
     ) {}
 
@@ -85,7 +80,7 @@ export class AccountsComponent implements OnInit {
     private authDeezer() {
         const callbackUrl = 'http://localhost:4200/authorize1';
         const appid = '418162';
-        const scope = 'basic_access,email';
+        const scope = 'basic_access,email,manage_library';
         const url = `https://connect.deezer.com/oauth/auth.php?app_id=${appid}&redirect_uri=${callbackUrl}&perms=${scope}&response_type=token`;
 
         const win = window.open(encodeURI(url), '_self');

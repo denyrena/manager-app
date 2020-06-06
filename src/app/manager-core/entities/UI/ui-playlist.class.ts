@@ -1,3 +1,4 @@
+import { DeezerPlaylist } from './../deezer/playlist.i';
 import { Platform } from './../../enums/platform.enum';
 export class UIPlaylist {
     private static readonly spotifyDefaultCoverUri =
@@ -12,19 +13,22 @@ export class UIPlaylist {
     public id: string;
     public ownerId: string;
     public platform: Platform;
+    public total: number;
 
     private constructor(
         coverUri: string,
         name: string,
         id: string,
         ownerId: string,
-        platform: Platform
+        platform: Platform,
+        total: number
     ) {
         this.coverUri = coverUri;
         this.name = name;
         this.id = id;
         this.ownerId = ownerId;
         this.platform = platform;
+        this.total = total;
     }
 
     public static createFromSpotifyRawData(
@@ -40,7 +44,19 @@ export class UIPlaylist {
             rawData.name,
             rawData.id,
             rawData.owner.id,
-            Platform.Spotify
+            Platform.Spotify,
+            rawData.tracks.total
+        );
+    }
+
+    public static createFromDeezerRawData(rawData: DeezerPlaylist): UIPlaylist {
+        return new UIPlaylist(
+            rawData.picture_medium,
+            rawData.title,
+            rawData.id,
+            rawData.creator.id,
+            Platform.Deezer,
+            rawData.nb_tracks
         );
     }
 
@@ -58,7 +74,8 @@ export class UIPlaylist {
             'Loved Tracks',
             id,
             undefined,
-            platform
+            platform,
+            0
         );
     }
 }
