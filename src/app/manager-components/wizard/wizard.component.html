@@ -1,1 +1,199 @@
-<p>wizard works!</p>
+<h1 mat-dialog-title>Migration</h1>
+<mat-dialog-content>
+    <mat-horizontal-stepper [linear]="true" #stepper>
+        <mat-step color="accent" [editable]="currentStep === 1">
+            <ng-template matStepLabel>Migration Settings</ng-template>
+
+            <div class="grid">
+                <div class="sourceColumn">
+                    <mat-form-field color="accent">
+                        <mat-label>Choose source platform:</mat-label>
+                        <mat-select
+                            class="item"
+                            [formControl]="sourcePlatformSelectControl"
+                            [(ngModel)]="migrationSettings.sourcePlatform"
+                            (ngModelChange)="loadPlaylists()"
+                        >
+                            <mat-option
+                                *ngFor="let platform of platforms | keyvalue"
+                                [value]="platform.value"
+                            >
+                                {{ platform.key }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="item sourceColumn">
+                        <mat-radio-button
+                            name="sourcerb"
+                            (change)="selectSourceType(1)"
+                            [checked]="migrationSettings.sourceType === 1"
+                            >Migrate from accounts playlist</mat-radio-button
+                        >
+                        <mat-form-field color="accent">
+                            <mat-label>Choose source playlist:</mat-label>
+                            <mat-select
+                                [disabled]="migrationSettings.sourceType !== 1"
+                                [formControl]="sourcePlaylistSelectControl"
+                                [(ngModel)]="migrationSettings.sourcePlaylist"
+                            >
+                                <mat-option
+                                    *ngFor="
+                                        let playlist of sourcePlaylists | async
+                                    "
+                                    [value]="playlist"
+                                >
+                                    {{ playlist.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="item sourceColumn">
+                        <mat-radio-button
+                            name="sourcerb"
+                            (change)="selectSourceType(2)"
+                            [checked]="migrationSettings.sourceType === 2"
+                            >From public link
+                        </mat-radio-button>
+                        <mat-form-field color="accent">
+                            <mat-label>Enter playlist url</mat-label>
+                            <input
+                                matInput
+                                autocomplete="off"
+                                [readOnly]="migrationSettings.sourceType !== 2"
+                                [formControl]="sourceLinkInputControl"
+                                [(ngModel)]="migrationSettings.sourceLink"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="item">
+                        <mat-radio-button
+                            name="sourcerb"
+                            (change)="selectSourceType(3)"
+                            [checked]="migrationSettings.sourceType === 3"
+                            [disabled]="
+                                migrationSettings.sourcePlatform === 'Deezer'
+                            "
+                            >From Loved Tracks</mat-radio-button
+                        >
+                    </div>
+                </div>
+
+                <div class="targetColumn">
+                    <mat-form-field color="accent">
+                        <mat-label>Choose target platform:</mat-label>
+                        <mat-select
+                            class="item"
+                            [formControl]="targetPlatformSelectControl"
+                            [(ngModel)]="migrationSettings.targetPlatform"
+                        >
+                            <mat-option
+                                *ngFor="let platform of platforms | keyvalue"
+                                [value]="platform.value"
+                            >
+                                {{ platform.key }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="item targetColumn">
+                        <mat-radio-button
+                            name="targetrb"
+                            (change)="selectTargetType(1)"
+                            [checked]="migrationSettings.targetType === 1"
+                            >Create new playlist</mat-radio-button
+                        >
+                        <mat-form-field color="accent">
+                            <mat-label>Enter playlist name</mat-label>
+                            <input
+                                matInput
+                                autocomplete="off"
+                                [formControl]="targetPlaylistInputControl"
+                                [(ngModel)]="
+                                    migrationSettings.targetPlaylistName
+                                "
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="item">
+                        <mat-radio-button
+                            name="targetrb"
+                            (change)="selectTargetType(3)"
+                            [checked]="migrationSettings.targetType === 3"
+                            [disabled]="
+                                migrationSettings.sourceType === 3 &&
+                                migrationSettings.sourcePlatform ===
+                                    migrationSettings.targetPlatform &&
+                                migrationSettings.sourcePlaylist.name ===
+                                    'Loved Tracks'
+                            "
+                            >To Loved Tracks</mat-radio-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step [editable]="currentStep === 2">
+            <ng-template matStepLabel>Finding Tracks</ng-template>
+            <mat-card *ngIf="searchProgress | async as progress">
+                <mat-card-content>
+                    <h2 class="example-h2">Search in progress...</h2>
+                    <h3 class="example-h3">Found {{ progress.ok }} tracks</h3>
+                    <h3 class="example-h3">
+                        Not found {{ progress.notOk }} tracks
+                    </h3>
+                    <h3 class="example-h3">
+                        Processed
+                        {{ calcSearchProgress(progress) }}%
+                    </h3>
+
+                    <section class="example-section">
+                        <mat-progress-bar
+                            class="example-margin"
+                            color="accent"
+                            mode="determinate"
+                            value="{{ calcSearchProgress(progress) }}"
+                        >
+                        </mat-progress-bar>
+                    </section>
+                </mat-card-content>
+            </mat-card>
+        </mat-step>
+        <mat-step [editable]="currentStep === 3">
+            <ng-template matStepLabel>Importing Tracks</ng-template>
+            <mat-card class="progress-card" *ngIf="insertProgress | async as progress">
+                <mat-card-content>
+                    <h2 class="example-h2">Import in progress...</h2>
+                    <h3 class="example-h3">Processed
+                        {{ calcInsertProgress(progress) }}%</h3>
+
+                    <section class="example-section">
+                        <mat-progress-bar
+                            class="example-margin"
+                            color="accent"
+                            mode="determinate"
+                            value="{{ calcInsertProgress(progress) }}"
+                        >
+                        </mat-progress-bar>
+                    </section>
+                </mat-card-content>
+            </mat-card>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button
+        mat-button
+        [disabled]="isBusy"
+        [hidden]="currentStep > 1"
+        (click)="cancel()"
+    >
+        Cancel
+    </button>
+    <button mat-button [disabled]="isBusy" (click)="nextStep()">
+        {{ getNextStepActionName() }}
+    </button>
+</mat-dialog-actions>

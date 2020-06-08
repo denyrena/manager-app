@@ -1,73 +1,69 @@
 import { DeezerTrack } from './../deezer/track.i';
 export class UITrack {
-    public isFavourite: boolean;
+    public isFavourite = false;
     public id: string;
     public image: string;
     public name: string;
     public artist: string;
-    public album: string;
     public length: string;
     public uri: string;
 
+    public originalName: string;
+    public originalArtists: string[];
+
     private constructor(
-        isFavourite: boolean,
         id: string,
         image: string,
         name: string,
         artist: string,
-        album: string,
         length: string,
-        uri: string
+        uri: string,
+        originalName: string,
+        originalArtists: string[]
     ) {
-        this.isFavourite = isFavourite;
         this.id = id;
         this.image = image;
         this.name = name;
         this.artist = artist;
-        this.album = album;
         this.length = length;
         this.uri = uri;
+        this.originalName = originalName;
+        this.originalArtists = originalArtists;
     }
 
     public static createFromSpotifyRawData(
-        rawData: SpotifyApi.TrackObjectFull,
-        isFav: boolean
+        rawData: SpotifyApi.TrackObjectFull
     ): UITrack {
-        const album = this.shorten(rawData.album.name, 35);
         const artist = this.getArtists(rawData.artists);
         const image = rawData.album.images[0].url;
         const length = this.getLength(rawData.duration_ms);
         const name = this.shorten(rawData.name, 15);
 
         return new UITrack(
-            isFav,
             rawData.id,
             image,
             name,
             artist,
-            album,
             length,
-            rawData.uri
+            rawData.uri,
+            rawData.name,
+            rawData.artists.map((a) => a.name),
         );
     }
 
-    public static createFromDeezerRawData(
-        rawData: DeezerTrack,
-        isFav: boolean
-    ): UITrack {
-        const album = this.shorten(rawData.album.title, 35);
+    public static createFromDeezerRawData(rawData: DeezerTrack): UITrack {
         const length = this.getLength(rawData.duration * 1000);
         const name = this.shorten(rawData.title, 15);
 
         return new UITrack(
-            isFav,
             rawData.id,
             rawData.album.cover_big,
             name,
             rawData.artist.name,
-            album,
             length,
-            rawData.id
+            rawData.id,
+            rawData.title,
+            [rawData.artist.name],
         );
     }
 

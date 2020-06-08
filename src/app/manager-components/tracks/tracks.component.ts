@@ -20,13 +20,7 @@ import { Platform } from 'src/app/manager-core/enums/platform.enum';
 export class TracksComponent implements OnInit {
     infinite: Observable<UITrack[]>;
 
-    @ViewChild(CdkVirtualScrollViewport)
-    private viewport: CdkVirtualScrollViewport;
-    private offset = new BehaviorSubject<number>(1);
-    private curOffset = 0;
-    private limit = 1;
-    private batchSize = 25;
-    private msg: ShowTracksMessage<UIPlaylist>;
+    private msg: ShowTracksMessage<UIPlaylist | string>;
 
     constructor(
         private pms: TracksShowMessageService,
@@ -42,34 +36,7 @@ export class TracksComponent implements OnInit {
             }
         });
     }
-    public nextBatch(e: any) {
-        if (this.curOffset > this.limit) {
-            return;
-        }
 
-        const end = this.viewport.getRenderedRange().end;
-        const total = this.viewport.getDataLength();
-
-        if (end === total) {
-            console.log(this.curOffset, ' of ', this.limit);
-            this.curOffset += this.batchSize;
-            this.offset.next(this.curOffset);
-        }
-    }
-    public toggleFavourite(track: UITrack) {
-        const promise = track.isFavourite
-            ? this.spotyInfo.unFavouriteTrack(track.id)
-            : this.spotyInfo.favouriteTrack(track.id);
-
-        promise.then(() => {
-            track.isFavourite = !track.isFavourite;
-            this.notify.open(
-                track.isFavourite
-                    ? 'Track was added to Loved'
-                    : 'Track removed from Loved'
-            );
-        });
-    }
     public getEditablePls(): Observable<UIPlaylist[]> {
         return this.spotyInfo
             .fetchEditablePlayLists()
@@ -88,75 +55,52 @@ export class TracksComponent implements OnInit {
                     : this.notify.open('Error adding to a playlist')
             );
     }
-    private handleMessage(msg: ShowTracksMessage<UIPlaylist>): void {
+    private handleMessage(msg: ShowTracksMessage<UIPlaylist | string>): void {
         this.msg = msg;
+
+        const id = this.getPlaylistId(msg.parentEntity);
+
         if (msg.action === ShowMode.ShowPlaylist) {
-            this.initPlaylistLoad(msg.platform, msg.parentEntity);
+            this.initPlaylistLoad(msg.platform, id);
         } else if (msg.action === ShowMode.ShowSearchResult) {
             this.initSearchResultLoad();
         } else {
             throw new Error('');
         }
     }
+    getPlaylistId(parentEntity: string | UIPlaylist) {
+        if (
+            typeof parentEntity === 'string' ||
+            typeof parentEntity === 'number'
+        ) {
+            return parentEntity;
+        } else {
+            return parentEntity.id;
+        }
+    }
     private initSearchResultLoad() {
         throw new Error('Method not implemented.');
     }
-    private initPlaylistLoad(platform: Platform, pls: UIPlaylist) {
-        this.curOffset = 0;
-        this.offset = new BehaviorSubject<number>(0);
-        this.infinite = this.offset.pipe(
-            throttleTime(500),
-            switchMap((n) => this.getBatch(n, platform, pls)),
-            scan((acc, batch) => acc.concat(batch))
-        );
-    }
-    private getBatch(
-        n: number,
-        platform: Platform,
-        pls: UIPlaylist
-    ): Observable<UITrack[]> {
-        if (platform === Platform.Spotify) {
-            return this.getSpotifyBatch(n, pls);
-        } else if (platform === Platform.Deezer) {
-            return this.getDeezerBatch(n, pls);
-        } else {
-            throw new Error('');
-        }
-    }
-    getDeezerBatch(offset: number, pls: UIPlaylist): Observable<UITrack[]> {
-        return this.dzInfo
-            .fetchPlaylistTracks(pls.id, this.batchSize, offset)
-            .pipe(
-                tap((page) => (this.limit = page.total)),
-                map((page) =>
-                    page.data.map((t, i) =>
-                        UITrack.createFromDeezerRawData(t, false)
-                    )
-                )
-            );
-    }
-    private getSpotifyBatch(
-        offset: number,
-        pls: UIPlaylist
-    ): Observable<UITrack[]> {
-        return this.spotyInfo
-            .fetchPlaylistTracks(pls.id, this.batchSize, offset)
-            .pipe(
-                tap((page) => (this.limit = page.total)),
-                switchMap((page) => {
-                    return this.spotyInfo
-                        .libraryContainsTrack(page.items.map((i) => i.track.id))
-                        .pipe(
-                            map((ids) =>
-                                page.items.map((t, i) =>
-                                    UITrack.createFromSpotifyRawData(
-                                        t.track,
-                                        ids[i]
-                                    )
-                                )
-                            )
-                        );
-                })
-            );
+    private initPlaylistLoad(platform: Platform, id: string) {
+        this.infinite =
+            platform === Platform.Deezer
+                ? this.dzInfo
+                      .fetchPlaylistTracks(id)
+                      .pipe(
+                          map((data) =>
+                              data.map((pls) =>
+                                  UITrack.createFromDeezerRawData(pls)
+                              )
+                          )
+                      )
+                : this.spotyInfo
+                      .fetchPlaylistTracks(id)
+                      .pipe(
+                          map((data) =>
+                              data.map((pls) =>
+                                  UITrack.createFromSpotifyRawData(pls)
+                              )
+                          )
+                      );
     }
 }

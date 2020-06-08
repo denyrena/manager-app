@@ -34,7 +34,7 @@ import { DeezerAuthComponent } from './manager-components/deezer-auth/deezer-aut
         CreatePlaylistDialogComponent,
         DeezerAuthComponent,
     ],
-    entryComponents: [CreatePlaylistDialogComponent],
+    entryComponents: [CreatePlaylistDialogComponent, WizardComponent],
     imports: [AppRoutingModule, NgMaterial, HttpClientModule, HttpClientJsonpModule],
     providers: [
         {

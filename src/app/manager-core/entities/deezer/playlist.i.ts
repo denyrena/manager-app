@@ -33,4 +33,5 @@ export interface DeezerResponse<T> {
     data: T[];
     checksum: string;
     total: number;
+    next?: string;
 }

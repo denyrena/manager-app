@@ -1,7 +1,6 @@
 <ng-container *ngIf="infinite | async as batches">
     <cdk-virtual-scroll-viewport
-        itemSize="448"
-        (scrolledIndexChange)="nextBatch($event)"
+        itemSize="448"        
     >
         <div class="container">
             <div class="wrapper" *cdkVirtualFor="let batch of batches | batch">
@@ -34,9 +33,6 @@
 
 <mat-menu #trackActionMenu="matMenu">
     <ng-template matMenuContent let-data="track">
-        <button mat-menu-item (click)="toggleFavourite(data)">
-            {{ data.isFavourite ? 'Remove from Loved' : 'Add to Loved' }}
-        </button>
         <button
             mat-menu-item
             [matMenuTriggerFor]="plsSelectMenu"

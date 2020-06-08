@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SpotifyAuthModule } from 'spotify-auth';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },

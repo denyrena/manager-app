@@ -17,6 +17,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 export const NgMaterial = [
     BrowserModule,
@@ -38,4 +42,8 @@ export const NgMaterial = [
     ReactiveFormsModule,
     MatMenuModule,
     MatTabsModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatRadioModule,
+    MatProgressBarModule,
 ];

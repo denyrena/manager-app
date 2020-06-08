@@ -5,7 +5,7 @@ export class UIPlaylist {
         'https://open.scdn.co/cdn/images/favicon.5cb2bd30.ico';
     private static readonly deezerDefaultCoverUri =
         'https://e-cdns-files.dzcdn.net/cache/images/common/favicon/favicon.a6a53d55264841165a904dbea19d5d73.ico';
-    private static readonly spotifyLovedTracksId = 'spotify-fav-tracks';
+    public static readonly spotifyLovedTracksId = 'spotify-fav-tracks';
     private static readonly deezerLovedTracksId = 'deezer-fav-tracks';
 
     public coverUri: string;

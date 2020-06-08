@@ -1,0 +1,53 @@
+.grid {
+    width: auto;
+    display: grid;
+    grid-template-columns: 300px 100px 300px;
+}
+
+.sourceColumn {
+    width: 300px;
+    grid-column-start: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+.targetColumn {
+    width: 300px;
+    grid-column-start: 3;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.item {
+    margin: 0, 10px, 0, 0;
+}
+
+::ng-deep mat-card {
+    min-height: 198px;
+}
+
+.example-h2 {
+    margin: 5px;
+}
+.example-h3 {
+    margin: 0;
+    margin-left: 15px;
+}
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.example-margin {
+    margin: 0 10px;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}

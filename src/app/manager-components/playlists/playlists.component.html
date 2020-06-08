@@ -38,14 +38,6 @@
                 <mat-action-list>
                     <button
                         mat-list-item
-                        (click)="selectPlaylist(lovedTracksDeezer)"
-                    >
-                        <img matListAvatar [src]="lovedTracksDeezer.coverUri" />
-                        <h3 matLine>{{ lovedTracksDeezer.name }}</h3>
-                    </button>
-
-                    <button
-                        mat-list-item
                         *ngFor="let playlist of dzPlaylists | async"
                         (click)="selectPlaylist(playlist)"
                     >
@@ -58,8 +50,6 @@
                 <mat-divider></mat-divider>
             </mat-tab>
         </mat-tab-group>
-
-        <!-- TODO DEEZER -->
 
         <div class="actions">
             <button mat-button>Remove Playlist</button>

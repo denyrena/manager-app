@@ -88,8 +88,13 @@ export class PlaylistsComponent implements OnInit {
         }
 
         switch (data.platform) {
-            case Platform.Deezer:
+            case Platform.Deezer: {
+                this.dzInfo.createPlaylist(data.name).subscribe((response) => {
+                    this.notify.open('Playlist successfully created!');
+                    this.refreshPlaylistsOnPlatform(data.platform);
+                });
                 break;
+            }
             case Platform.Spotify: {
                 this.spotyInfo
                     .registerPlaylist(data.name)
@@ -101,7 +106,6 @@ export class PlaylistsComponent implements OnInit {
                         );
                         this.refreshPlaylistsOnPlatform(data.platform);
                     });
-                return;
             }
         }
     }
