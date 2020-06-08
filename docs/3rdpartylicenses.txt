@@ -107,9 +107,15 @@ THE SOFTWARE.
 
 @angular/material/menu
 
+@angular/material/progress-bar
+
+@angular/material/radio
+
 @angular/material/select
 
 @angular/material/snack-bar
+
+@angular/material/stepper
 
 @angular/material/tabs
 
